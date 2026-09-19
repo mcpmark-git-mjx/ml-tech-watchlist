@@ -1,15 +1,18 @@
-name: enable-issues
+name: setup-issues
 on: workflow_dispatch
-permissions:
-  contents: read
-  issues: write
+permissions: write-all
 jobs:
-  enable:
+  setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Turn on the Issues feature for this repository
+      - name: Enable Issues feature and open one issue per watchlist technology
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -x
-          gh api -X PATCH "repos/${GITHUB_REPOSITORY}" -f has_issues=true || echo "PATCH_FAILED"
+          set -eux
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}" -f has_issues=true
+          gh issue create --title "All-Hands-AI/OpenHands: track the OpenHands coding-agent platform" --body "OpenHands surfaced by the video 'OpenHands + Devstral = A Fully Local Coding Agent'. Open-source AI software-engineering agent (CLI, desktop app, self-hostable cloud, SDK). Repo: https://github.com/All-Hands-AI/OpenHands"
+          gh issue create --title "anthropics/claude-code: track Claude Code releases and plugins" --body "Claude Code surfaced by 'Claude Code best practices | Code w/ Claude', 'I Tested Claude Code: \$20 vs. \$200 Subscription' and 'Gemini CLI vs Claude Code vs Codex Compared!'. Official repo for Anthropic's agentic terminal coding tool: CLI installers, the @anthropic-ai/claude-code SDK and bundled plugins. Repo: https://github.com/anthropics/claude-code"
+          gh issue create --title "google-gemini/gemini-cli: track Gemini CLI agent updates" --body "Gemini CLI surfaced by 'Gemini CLI vs Claude Code vs Codex Compared! Should You Use an AI CLI?'. Google's open-source terminal AI agent: codebase chat, file editing, shell execution, Google Search grounding, MCP tools. Repo: https://github.com/google-gemini/gemini-cli"
+          gh issue create --title "openai/codex: track the Codex coding agent" --body "Codex surfaced by 'Gemini CLI vs Claude Code vs Codex Compared! Should You Use an AI CLI?'. OpenAI's open-source terminal coding agent: Rust CLI plus TypeScript SDK, sandboxed command execution, interactive and headless modes. Repo: https://github.com/openai/codex"
+          gh issue create --title "QwenLM/Qwen3-Coder: track Qwen3-Coder model releases" --body "Qwen3-Coder surfaced by 'Alibaba is coming for Claude...'. Official repo for the open-weight Qwen3-Coder coding LLM family: model cards, quickstarts, local inference/serving recipes and evaluation tooling. Repo: https://github.com/QwenLM/Qwen3-Coder"
