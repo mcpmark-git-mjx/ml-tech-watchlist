@@ -1,11 +1,9 @@
-# ML tech watchlist
-
-Technologies surfaced by the "MCP-youtube" playlist that have their own official public repository on GitHub. One entry per distinct technology; rows are ordered alphabetically by repository URL (case-insensitive).
-
-| Technology | Repository | Main functions | Source video(s) |
-| --- | --- | --- | --- |
-| OpenHands | https://github.com/All-Hands-AI/OpenHands | Open-source AI software-engineering agent: an autonomous developer agent that edits code, runs shell commands, browses the web and opens pull requests inside a sandboxed Docker workspace, delivered as a CLI/desktop app and self-hostable cloud, plus an SDK for building your own agents. | OpenHands + Devstral = A Fully Local Coding Agent |
-| Claude Code | https://github.com/anthropics/claude-code | Anthropic's official repository for its agentic terminal coding tool: installers and setup docs for the CLI, the `@anthropic-ai/claude-code` TypeScript SDK for programmatic/headless use, bundled Claude Code plugins (custom slash commands and subagents), and the product's public issue tracker. | Claude Code best practices \| Code w/ Claude; I Tested Claude Code: $20 vs. $200 Subscription; Gemini CLI vs Claude Code vs Codex Compared! Should You Use an AI CLI? |
-| Gemini CLI | https://github.com/google-gemini/gemini-cli | Google's open-source command-line AI agent that puts Gemini models in the terminal: natural-language chat about a codebase, file reading and editing, shell command execution, Google Search grounding, MCP tool servers, and both an interactive REPL and non-interactive/automation modes. | Gemini CLI vs Claude Code vs Codex Compared! Should You Use an AI CLI? |
-| Codex | https://github.com/openai/codex | OpenAI's open-source coding agent that runs in the terminal: a Rust CLI plus TypeScript SDK that plans and executes multi-file code changes, runs commands and tests inside sandboxed environments, and can be driven interactively or headlessly for automation and code review. | Gemini CLI vs Claude Code vs Codex Compared! Should You Use an AI CLI? |
-| Qwen3-Coder | https://github.com/QwenLM/Qwen3-Coder | Official repository for the Qwen3-Coder open-weight coding LLM family: model cards and quickstart notebooks, instructions for local inference and serving (vLLM, SGLang, Ollama, llama.cpp), links to the Hugging Face weights, and evaluation/benchmark tooling. | Alibaba is coming for Claude... |
+| Technology | GitHub Repository | Main Functions |
+| --- | --- | --- |
+| Claude Code | https://github.com/anthropics/claude-code | Anthropic's agentic coding tool that lives in the terminal, understands a codebase and executes routine coding tasks, explains complex code and handles git workflows through natural-language commands |
+| Codex | https://github.com/openai/codex | OpenAI's open-source coding agent (Codex CLI) that runs locally on your machine and autonomously reads, edits and fixes code in a repository |
+| FlashAttention | https://github.com/Dao-AILab/flash-attention | Official implementation of FlashAttention and FlashAttention-2/3/4: fast and memory-efficient exact attention CUDA/ROCm kernels and PyTorch modules used to speed up transformer training and inference |
+| Gemini CLI | https://github.com/google-gemini/gemini-cli | Google's open-source Apache-2.0 AI agent that brings Gemini models directly into the terminal for code understanding, code generation, shell/file operations and workflow automation |
+| o1 Reasoning | https://github.com/srush/awesome-o1 | Curated bibliography and o1 tutorial slides covering the technical background of OpenAI's o1 test-time-compute reasoning models (chain-of-thought, process reward models, test-time scaling) |
+| OpenHands | https://github.com/OpenHands/OpenHands | Open-source AI software-engineering agent and self-hosted "Agent Canvas" developer control center that runs coding agents and automations across local, Docker, VM and cloud backends |
+| Qwen3-Coder | https://github.com/QwenLM/Qwen3-Coder | Alibaba Qwen's open-weight agentic coding model family (Qwen3-Coder-480B-A35B / 30B-A3B / Next) with 256K-token context, trained for coding agents and agentic tool use |
