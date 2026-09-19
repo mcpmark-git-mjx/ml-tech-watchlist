@@ -1,0 +1,13 @@
+name: enable-issues
+on: workflow_dispatch
+permissions:
+  contents: read
+  administration: write
+jobs:
+  enable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Turn on the Issues feature for this repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PATCH "repos/${GITHUB_REPOSITORY}" -f has_issues=true
