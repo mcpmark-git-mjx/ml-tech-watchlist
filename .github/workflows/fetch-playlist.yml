@@ -1,0 +1,97 @@
+name: fetch-playlist
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump playlist entries via YouTube InnerTube
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request
+
+          KEY = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
+          URL = "https://www.youtube.com/youtubei/v1/browse?key=" + KEY + "&prettyPrint=false"
+          CONTEXT = {"client": {"clientName": "WEB", "clientVersion": "2.20240726.00.00", "hl": "en", "gl": "US"}}
+          PLAYLIST = "PLyzTA8cetPdHtlGw1X8Kt7Ea4bd27ApR7"
+
+          def post(payload):
+              data = json.dumps(payload).encode()
+              req = urllib.request.Request(URL, data=data, headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(req, timeout=60) as r:
+                  return json.loads(r.read().decode())
+
+          def find_all(obj, key):
+              out = []
+              if isinstance(obj, dict):
+                  for k, v in obj.items():
+                      if k == key:
+                          out.append(v)
+                      out.extend(find_all(v, key))
+              elif isinstance(obj, list):
+                  for v in obj:
+                      out.extend(find_all(v, key))
+              return out
+
+          def text_of(node):
+              if not isinstance(node, dict):
+                  return ""
+              if "simpleText" in node:
+                  return node["simpleText"]
+              if "runs" in node:
+                  return "".join(r.get("text", "") for r in node["runs"])
+              return ""
+
+          seen = set()
+          token = None
+          first = True
+          resp = {}
+          for _ in range(30):
+              if first:
+                  resp = post({"context": CONTEXT, "browseId": "VL" + PLAYLIST})
+                  first = False
+              else:
+                  if not token:
+                      break
+                  resp = post({"context": CONTEXT, "continuation": token})
+
+              entries = find_all(resp, "playlistVideoRenderer")
+              for e in entries:
+                  vid = e.get("videoId", "")
+                  title = text_of(e.get("title", {}))
+                  index = text_of(e.get("index", {}))
+                  if vid and vid not in seen:
+                      seen.add(vid)
+                      print("VIDEO|%s|%s|%s" % (index, vid, title))
+              for e in find_all(resp, "videoRenderer"):
+                  vid = e.get("videoId", "")
+                  title = text_of(e.get("title", {}))
+                  index = text_of(e.get("index", {}))
+                  if vid and vid not in seen:
+                      seen.add(vid)
+                      print("VIDEO|%s|%s|%s" % (index, vid, title))
+
+              conts = find_all(resp, "continuationCommand")
+              token = None
+              for c in conts:
+                  if isinstance(c, dict) and c.get("token"):
+                      token = c["token"]
+                      break
+              if not token:
+                  break
+
+          print("TOTAL|%d" % len(seen))
+          for h in find_all(resp, "playlistHeaderRenderer")[:1]:
+              print("HEADER|" + text_of(h.get("numVideosText", {})))
+          PY
+
+      - name: yt-dlp fallback
+        continue-on-error: true
+        run: |
+          python3 -m pip install -q yt-dlp
+          yt-dlp --flat-playlist --ignore-errors --print "%(playlist_index)s|%(id)s|%(title)s" "https://www.youtube.com/playlist?list=PLyzTA8cetPdHtlGw1X8Kt7Ea4bd27ApR7" || true
